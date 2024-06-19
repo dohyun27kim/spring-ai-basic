@@ -16,28 +16,14 @@ public class OpenAIController {
     }
 
     @PostMapping("/capitalWithInfo")
-    public GetCapitalWithInfoResponse getCapitalWithInfo(@RequestBody GetCapitalRequest getCapitalRequest) {
+    public GetCapitalResponse getCapitalWithInfo(@RequestBody GetCapitalRequest getCapitalRequest) {
         return this.openAIService.getCapitalWithInfo(getCapitalRequest);
     }
-
-    //JSON
-//    @PostMapping("/capitalWithInfo")
-//    public Answer getCapitalWithInfo(@RequestBody GetCapitalRequest getCapitalRequest) {
-//        return this.openAIService.getCapitalWithInfo(getCapitalRequest);
-//    }
-    //JSON
 
     @PostMapping("/capital")
     public GetCapitalResponse getCapital(@RequestBody GetCapitalRequest getCapitalRequest) {
         return this.openAIService.getCapital(getCapitalRequest);
     }
-
-    //JSON
-//    @PostMapping("/capital")
-//    public Answer getCapital(@RequestBody GetCapitalRequest getCapitalRequest) {
-//        return this.openAIService.getCapital(getCapitalRequest);
-//    }
-    //JSON
 
     @PostMapping("/ask")
     public Answer askQuestion(@RequestBody Question question) {

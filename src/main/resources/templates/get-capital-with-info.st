@@ -1,6 +1,5 @@
-What is the capital of {stateOrCountry}? Respond with the following format:
-           The capital of ```stateOrCountry``` is ```capital```.
-           The city has a population of ```population```.
-           The city is located in ```region```.
-           The primary language spoken is ```language```.
-           The currency used is ```currency```.
+{stateOrCountry} 나라의 수도는 어디인지와 아래 형태로 대답해줘:
+           ```stateOrCountry``` 나라의 수도는 ```capital```.
+           인구는 ```population```.
+           언어는 ```language```.
+           통화는 ```currency```.
