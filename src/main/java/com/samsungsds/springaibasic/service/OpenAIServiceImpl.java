@@ -1,6 +1,5 @@
 package com.samsungsds.springaibasic.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samsungsds.springaibasic.model.*;
 
 import org.springframework.ai.chat.client.ChatClient;
@@ -16,7 +15,7 @@ public class OpenAIServiceImpl implements OpenAIService {
 
     private final ChatClient chatClient;
 
-    public OpenAIServiceImpl(ChatClient chatClient, ObjectMapper objectMapper) {
+    public OpenAIServiceImpl(ChatClient chatClient) {
         this.chatClient = chatClient;
     }
 
