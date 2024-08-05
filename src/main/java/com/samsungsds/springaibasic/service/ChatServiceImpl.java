@@ -8,7 +8,6 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -16,12 +15,12 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class OpenAIServiceImpl implements OpenAIService {
+public class ChatServiceImpl implements ChatService {
 
     private final ChatClient chatClient;
     private final ChatModel chatmodel;
 
-    public OpenAIServiceImpl(ChatClient chatClient, ChatModel chatmodel) {
+    public ChatServiceImpl(ChatClient chatClient, ChatModel chatmodel) {
         this.chatClient = chatClient;
         this.chatmodel = chatmodel;
     }
@@ -44,7 +43,8 @@ public class OpenAIServiceImpl implements OpenAIService {
                 .content();
 
 
-        this.chatmodel.call(new Prompt(promptMessage, OpenAiChatOptions.builder().withModel("gpt-3.5-turbo-0125").withTemperature(0.4f).build()));
+        this.chatmodel.call(new Prompt(promptMessage));
+
 
         return new CapitalResponse(content);
     }

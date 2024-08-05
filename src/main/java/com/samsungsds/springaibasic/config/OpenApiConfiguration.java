@@ -18,8 +18,8 @@ public class OpenApiConfiguration {
 
     private Info apiInfo() {
         return new Info()
-                .title("OpenAI API Page")
-                .description("OpenAI의 Chat모델을 사용하는 페이지")
+                .title("AI API Page")
+                .description("Chat모델을 사용하는 페이지")
                 .version("1.0.0");
     }
 }

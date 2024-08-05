@@ -5,7 +5,7 @@ import com.samsungsds.springaibasic.model.CapitalRequest;
 import com.samsungsds.springaibasic.model.CapitalResponse;
 import com.samsungsds.springaibasic.model.Question;
 
-public interface OpenAIService {
+public interface ChatService {
 
     CapitalResponse getCapitalWithInfo(CapitalRequest capitalRequest);
     CapitalResponse getCapital(CapitalRequest capitalRequest);

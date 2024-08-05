@@ -1,7 +1,7 @@
 package com.samsungsds.springaibasic.controller;
 
 import com.samsungsds.springaibasic.model.*;
-import com.samsungsds.springaibasic.service.OpenAIService;
+import com.samsungsds.springaibasic.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class OpenAIController {
+public class ChatController {
 
-    private final OpenAIService openAIService;
+    private final ChatService chatService;
 
-    public OpenAIController(OpenAIService openAIService) {
-        this.openAIService = openAIService;
+    public ChatController(ChatService chatService) {
+        this.chatService = chatService;
     }
 
     @PostMapping("/capitalWithInfo")
@@ -25,19 +25,19 @@ public class OpenAIController {
             "           언어는 \\```language\\```.<br>" +
             "           통화는 \\```currency\\```.")
     public CapitalResponse getCapitalWithInfo(@Parameter(description = "수도를 알고싶은 국가 이름 -> {country}" , example = "대한민국") @RequestBody CapitalRequest capitalRequest) {
-        return this.openAIService.getCapitalWithInfo(capitalRequest);
+        return this.chatService.getCapitalWithInfo(capitalRequest);
     }
 
     @PostMapping("/capital")
     @Operation(summary = "", description = "아래의 프롬프트를 실행한다. : <br>" +
             " {country} 나라의 수도는 어디?<br> ")
     public CapitalResponse getCapital(@Parameter(description = "수도를 알고싶은 국가나 주 이름 -> {country}", example = "대한민국") @RequestBody CapitalRequest capitalRequest) {
-        return this.openAIService.getCapital(capitalRequest);
+        return this.chatService.getCapital(capitalRequest);
     }
 
     @PostMapping("/ask")
     @Operation(summary = "자유 프롬프트 실행", description = "별도 포멧 없이 사용자의 입력을 그대로 실행")
     public Answer askQuestion(@Parameter(description = "실행 할 프롬프트") @RequestBody Question question) {
-        return openAIService.getAnswer(question);
+        return chatService.getAnswer(question);
     }
 }

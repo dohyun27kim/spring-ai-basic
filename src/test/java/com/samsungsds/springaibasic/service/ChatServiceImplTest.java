@@ -4,17 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class OpenAIServiceImplTest {
+class ChatServiceImplTest {
 
     @Autowired
-    OpenAIService openAIService;
+    ChatService chatService;
 
     @Test
     void getAnswer() {
-        String answer = openAIService.getAnswer("농담 하나만 해줘");
+        String answer = chatService.getAnswer("농담 하나만 해줘");
         System.out.println("Got the answer");
         System.out.println(answer);
     }
