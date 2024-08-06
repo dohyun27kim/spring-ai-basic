@@ -8,7 +8,7 @@
 <br>
 
 - OS: Windows
-- Platform: JDK(openjdk) 21+ 권장 / Docker Desktop 또는 WSL 내 Docker Runtime 환경 구성 권장
+- Platform: JDK(openjdk) 17 권장 / Docker Desktop 또는 WSL 내 Docker Runtime 환경 구성 권장
 - IDE: IntelliJ IDEA Ultimate 권장
 
 <br>
