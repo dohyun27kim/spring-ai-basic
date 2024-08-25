@@ -4,11 +4,11 @@ import com.samsungsds.springaibasic.model.*;
 import com.samsungsds.springaibasic.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
-@RestController
+@Controller
 public class ChatController {
 
     private final ChatService chatService;
@@ -40,4 +40,11 @@ public class ChatController {
     public Answer askQuestion(@Parameter(description = "실행 할 프롬프트") @RequestBody Question question) {
         return chatService.getAnswer(question);
     }
+
+    @PostMapping("/stream")
+    @ResponseBody
+    public Flux<String> streamChat(@RequestParam String message, @RequestParam(required = false) String chatId) {
+        return chatService.streamChat(chatId, message);
+    }
+
 }

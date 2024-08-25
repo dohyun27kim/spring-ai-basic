@@ -10,10 +10,22 @@ class ChatServiceImplTest {
     @Autowired
     ChatService chatService;
 
+
     @Test
     void getAnswer() {
         String answer = chatService.getAnswer("농담 하나만 해줘");
         System.out.println("Got the answer");
         System.out.println(answer);
     }
+
+    @Test
+    void testStreamChat() {
+
+        chatService.streamChat("chatId", "안녕 니 이름은 뭐니")
+                .doOnNext(System.out::println)
+                .blockLast();
+
+    }
+
+
 }

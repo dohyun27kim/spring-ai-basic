@@ -5,11 +5,11 @@ import com.samsungsds.springaibasic.model.Question;
 import com.samsungsds.springaibasic.service.RAGService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class RAGController {
 
     private final RAGService ragService;

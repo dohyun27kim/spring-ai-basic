@@ -5,12 +5,15 @@ import com.samsungsds.springaibasic.model.CapitalRequest;
 import com.samsungsds.springaibasic.model.CapitalResponse;
 import com.samsungsds.springaibasic.model.Question;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.Map;
 
@@ -25,10 +28,10 @@ public class ChatServiceImpl implements ChatService {
         this.chatmodel = chatmodel;
     }
 
-    @Value("classpath:templates/get-capital-prompt.st")
+    @Value("classpath:prompts/get-capital-prompt.st")
     private Resource capitalPrompt;
 
-    @Value("classpath:templates/get-capital-with-info.st")
+    @Value("classpath:prompts/get-capital-with-info.st")
     private Resource capitalPromptWithInfo;
 
 
@@ -72,11 +75,26 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public Flux<String> streamChat(String chatId, String message) {
+        return chatClient.prompt()
+                .user(message)
+                .advisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                .advisors(advisorSpec -> advisorSpec
+                        .param("CHAT_MEMORY_CONVERSATION_ID_KEY", chatId)
+                        .param("CHAT_MEMORY_RETRIEVE_SIZE_KEY", 100))
+                .stream()
+                .content().concatWith(Flux.just("data: [DONE]\n\n"));
+    }
+
+
+    @Override
     public String getAnswer(String question) {
         return chatClient.prompt()
                 .user(question)
                 .call()
                 .content();
     }
+
+
 
 }
