@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PageController {
 
     @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("message", "Hello, Thymeleaf!");
-        return "index";
+    public String chat() {
+        return "chat";
     }
 }

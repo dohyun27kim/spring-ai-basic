@@ -1,14 +1,7 @@
 package com.samsungsds.springaibasic.service;
 
-import com.samsungsds.springaibasic.model.Answer;
-import com.samsungsds.springaibasic.model.CapitalRequest;
-import com.samsungsds.springaibasic.model.CapitalResponse;
-import com.samsungsds.springaibasic.model.Question;
+import com.samsungsds.springaibasic.model.*;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -16,16 +9,18 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.util.Map;
+import java.util.UUID;
+
+import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
+import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY;
 
 @Service
 public class ChatServiceImpl implements ChatService {
 
     private final ChatClient chatClient;
-    private final ChatModel chatmodel;
 
-    public ChatServiceImpl(ChatClient chatClient, ChatModel chatmodel) {
+    public ChatServiceImpl(ChatClient chatClient) {
         this.chatClient = chatClient;
-        this.chatmodel = chatmodel;
     }
 
     @Value("classpath:prompts/get-capital-prompt.st")
@@ -46,7 +41,7 @@ public class ChatServiceImpl implements ChatService {
                 .content();
 
 
-        this.chatmodel.call(new Prompt(promptMessage));
+        //this.chatmodel.call(new Prompt(promptMessage));
 
 
         return new CapitalResponse(content);
@@ -75,15 +70,20 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Flux<String> streamChat(String chatId, String message) {
+    public Flux<String> streamChat(ChatMessage message) {
+        String sessionId = message.getSessionId();
+        if (sessionId == null || sessionId.isEmpty()) {
+            sessionId = UUID.randomUUID().toString();
+            message.setSessionId(sessionId);
+        }
+
         return chatClient.prompt()
-                .user(message)
-                .advisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                .user(message.getContent())
                 .advisors(advisorSpec -> advisorSpec
-                        .param("CHAT_MEMORY_CONVERSATION_ID_KEY", chatId)
-                        .param("CHAT_MEMORY_RETRIEVE_SIZE_KEY", 100))
+                        .param(CHAT_MEMORY_CONVERSATION_ID_KEY, message.getSessionId())
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 100))
                 .stream()
-                .content().concatWith(Flux.just("data: [DONE]\n\n"));
+                .content();
     }
 
 

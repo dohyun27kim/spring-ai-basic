@@ -1,5 +1,6 @@
 package com.samsungsds.springaibasic.service;
 
+import com.samsungsds.springaibasic.model.ChatMessage;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +22,10 @@ class ChatServiceImplTest {
     @Test
     void testStreamChat() {
 
-        chatService.streamChat("chatId", "안녕 니 이름은 뭐니")
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setContent("안녕 니 이름은 뭐니");
+
+        chatService.streamChat(chatMessage)
                 .doOnNext(System.out::println)
                 .blockLast();
 

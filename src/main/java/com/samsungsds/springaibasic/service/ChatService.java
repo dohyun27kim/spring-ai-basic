@@ -1,9 +1,6 @@
 package com.samsungsds.springaibasic.service;
 
-import com.samsungsds.springaibasic.model.Answer;
-import com.samsungsds.springaibasic.model.CapitalRequest;
-import com.samsungsds.springaibasic.model.CapitalResponse;
-import com.samsungsds.springaibasic.model.Question;
+import com.samsungsds.springaibasic.model.*;
 import reactor.core.publisher.Flux;
 
 public interface ChatService {
@@ -14,5 +11,5 @@ public interface ChatService {
     String getAnswer(String question);
     Answer getAnswer(Question question);
 
-    Flux<String> streamChat(String chatId, String message);
+    Flux<String> streamChat(ChatMessage message);
 }
