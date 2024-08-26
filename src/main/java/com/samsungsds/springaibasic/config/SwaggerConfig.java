@@ -13,13 +13,9 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .components(new Components())
-                .info(apiInfo());
-    }
-
-    private Info apiInfo() {
-        return new Info()
-                .title("AI API Page")
-                .description("Chat모델을 사용하는 페이지")
-                .version("1.0.0");
+                .info(new Info()
+                        .title("AI API Page")
+                        .description("Chat모델을 사용하는 페이지")
+                        .version("1.0.0"));
     }
 }

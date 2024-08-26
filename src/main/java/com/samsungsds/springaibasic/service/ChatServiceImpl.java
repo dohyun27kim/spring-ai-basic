@@ -40,10 +40,6 @@ public class ChatServiceImpl implements ChatService {
                 .call()
                 .content();
 
-
-        //this.chatmodel.call(new Prompt(promptMessage));
-
-
         return new CapitalResponse(content);
     }
 
