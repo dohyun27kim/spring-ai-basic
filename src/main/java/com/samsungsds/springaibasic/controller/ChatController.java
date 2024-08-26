@@ -4,17 +4,27 @@ import com.samsungsds.springaibasic.model.*;
 import com.samsungsds.springaibasic.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@Controller
 public class ChatController {
 
-    private final ChatService chatService;
+    private final Logger logger = Logger.getLogger(ChatController.class.getName());
 
-    public ChatController(ChatService chatService) {
+    private final ChatService chatService;
+    private final SimpMessagingTemplate messagingTemplate;
+
+    public ChatController(ChatService chatService, SimpMessagingTemplate messagingTemplate) {
         this.chatService = chatService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @PostMapping("/capitalWithInfo")
@@ -40,4 +50,20 @@ public class ChatController {
     public Answer askQuestion(@Parameter(description = "실행 할 프롬프트") @RequestBody Question question) {
         return chatService.getAnswer(question);
     }
+
+
+    @MessageMapping("/chat")
+    public void handleChat(@Payload ChatMessage message) {
+
+        this.chatService.streamChat(message)
+                .doOnNext(content -> {
+                    ChatMessage chatMessage = new ChatMessage(message.getSessionId(), "AI", content);
+                    messagingTemplate.convertAndSend("/topic/chat/" + message.getSessionId(), chatMessage);
+                })
+                .doOnError(error -> logger.log(Level.SEVERE, "Error in chat stream", error))
+                .doOnComplete(() -> logger.info("Chat stream completed for session: " + message.getSessionId()))
+                .subscribe();
+
+    }
+
 }

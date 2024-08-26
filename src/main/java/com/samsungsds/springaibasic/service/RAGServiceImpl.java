@@ -20,7 +20,7 @@ public class RAGServiceImpl implements RAGService {
 
 
 
-    @Value("classpath:/templates/rag-prompt-template.st")
+    @Value("classpath:prompts/rag-prompt-template.st")
     private Resource ragPromptTemplate;
 
     public RAGServiceImpl(ChatClient chatClient, DataService dataService) {
@@ -47,4 +47,6 @@ public class RAGServiceImpl implements RAGService {
                 .call()
                 .content());
     }
+
+
 }
