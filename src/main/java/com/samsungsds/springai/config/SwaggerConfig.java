@@ -15,7 +15,7 @@ public class SwaggerConfig {
                 .components(new Components())
                 .info(new Info()
                         .title("AI API Page")
-                        .description("Chat모델을 사용하는 페이지")
+                        .description("Spring AI실습을 위한 SwaggerUI 페이지")
                         .version("1.0.0"));
     }
 }
