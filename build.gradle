@@ -22,7 +22,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
     implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.11.0'
-    implementation 'org.springframework.ai:spring-ai-tika-document-reader'
     implementation 'org.springframework.ai:spring-ai-pinecone-store-spring-boot-starter'
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

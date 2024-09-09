@@ -14,39 +14,40 @@ import java.util.*;
 
 @Component
 public class CSVReader {
+    private static final String[] HEADERS = {"title", "pubDate", "guid", "description"};
 
-    public List<Document> loadCsvToDocument(String filePath)  {
-
-        Reader reader;
-        CSVParser csvParser;
+    public List<Document> loadCsvToDocument(String filePath) {
         List<Document> documents = new ArrayList<>();
-        String[] HEADERS = {"title","pubDate","guid","link","description"};
-        try {
-            reader = new FileReader(filePath);
-            CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
-                    .setHeader(HEADERS)
-                    .setSkipHeaderRecord(true)
-                    .build();
-            csvParser = new CSVParser(reader, csvFormat);
+        Map<String, Object> metadata = new HashMap<>();
 
-            StringBuilder stringBuilder = new StringBuilder();
-
-
+        try (CSVParser csvParser = new CSVParser(new FileReader(filePath), CSVFormat.DEFAULT
+                .builder()
+                .setHeader(HEADERS)
+                .setSkipHeaderRecord(true)
+                .build())) {
+            StringBuilder contentBuilder = new StringBuilder();
             for (CSVRecord csvRecord : csvParser) {
-                //stringbuilder 초기화
-                stringBuilder.setLength(0);
-                for (int i = 0; i < csvRecord.size(); i++) {
-                    stringBuilder.append(csvParser.getHeaderNames().get(i)).append("=> ").append(csvRecord.get(i)).append("\n");
+                metadata.clear();
+                contentBuilder.setLength(0);
+
+                for (String header : HEADERS) {
+                    String value = csvRecord.get(header);
+                    metadata.put(header, value);
+
+                    if ("title".equals(header) || "description".equals(header)) {
+                        contentBuilder.append(header)
+                                .append(": ")
+                                .append(value)
+                                .append("\n\n");
+                    }
                 }
 
-                documents.add(new Document(stringBuilder.toString()));
+                documents.add(new Document(contentBuilder.toString(), new HashMap<>(metadata)));
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return documents;
     }
-
 }

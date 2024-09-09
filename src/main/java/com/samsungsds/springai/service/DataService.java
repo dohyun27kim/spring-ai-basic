@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DataService {
 
-    void createDataset();
+    void storeData();
 
     List<Document> searchData(String searchQuery);
 }
