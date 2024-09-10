@@ -30,18 +30,6 @@ public class ChatServiceImpl implements ChatService {
     private Resource capitalPromptWithInfo;
 
 
-    @Override
-    public CapitalResponse getCapitalWithInfo(CapitalRequest capitalRequest) {
-        PromptTemplate promptTemplate = new PromptTemplate(capitalPromptWithInfo);
-
-        String promptMessage = String.valueOf(promptTemplate.create(Map.of("country", capitalRequest.country())));
-        String content = chatClient.prompt()
-                .user(promptMessage)
-                .call()
-                .content();
-
-        return new CapitalResponse(content);
-    }
 
     @Override
     public CapitalResponse getCapital(CapitalRequest capitalRequest) {
@@ -81,16 +69,5 @@ public class ChatServiceImpl implements ChatService {
                 .stream()
                 .content();
     }
-
-
-    @Override
-    public String getAnswer(String question) {
-        return chatClient.prompt()
-                .user(question)
-                .call()
-                .content();
-    }
-
-
 
 }
