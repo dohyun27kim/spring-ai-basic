@@ -33,16 +33,10 @@ public class CSVReader {
                 for (String header : HEADERS) {
                     String value = csvRecord.get(header);
                     metadata.put(header, value);
-
-                    if ("title".equals(header) || "description".equals(header)) {
-                        contentBuilder.append(header)
-                                .append(": ")
-                                .append(value)
-                                .append("\n\n");
-                    }
                 }
 
-                documents.add(new Document(contentBuilder.toString(), new HashMap<>(metadata)));
+                // 준비 한 Content와 Metadata를 Document로 만들어서 List에 추가 한다.
+                documents.add(new Document((String)metadata.get("title"), new HashMap<>(metadata)));
             }
         } catch (IOException e) {
             e.printStackTrace();
