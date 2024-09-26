@@ -26,6 +26,7 @@ public class CSVReaderTest {
             for (Map.Entry<String, Object> entry : documents.get(i).getMetadata().entrySet()) {
                 System.out.println(entry.getKey() + ": " + entry.getValue());
             }
+            System.out.println("=====================================");
         }
 
     }
