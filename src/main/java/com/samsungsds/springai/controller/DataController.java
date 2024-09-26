@@ -22,8 +22,9 @@ public class DataController {
     }
 
     @PostMapping("/store-data")
+    @ResponseBody
     @Operation(summary = "Pincone에 데이터를 저장", description = "Pincone에 데이터를 저장한다. ")
-    public void getCapitalWithInfo() {
+    public void storeData() {
         dataService.storeData();
     }
 
